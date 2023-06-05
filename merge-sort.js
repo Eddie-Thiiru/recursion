@@ -1,23 +1,39 @@
-function sortArrays(one, two) {
-  const mergedArrays = one.concat(two);
-  const sortedArr = mergedArrays.sort((a, b) => a - b);
+function merge(left, right) {
+  let mergedArr = [];
 
-  return sortedArr;
+  // Sorts and merges both left and right arrays
+  while (left.length > 0 && right.length > 0) {
+    if (left[0] < right[0]) {
+      mergedArr.push(left[0]);
+      left.shift();
+    } else {
+      mergedArr.push(right[0]);
+      right.shift();
+    }
+  }
+
+  if (left.length === 0 && right.length !== 0) {
+    mergedArr = mergedArr.concat(right);
+  } else if (left.length !== 0 && right.length === 0) {
+    mergedArr = mergedArr.concat(left);
+  }
+
+  return mergedArr;
 }
 
 function mergeSort(arr) {
   if (arr.length < 2) {
     return arr;
-  } else {
-    let middleIndex = arr.length / 2;
-    let leftCopy = arr.slice(0, middleIndex);
-    let rightCopy = arr.slice(middleIndex, arr.length);
-
-    mergeSort(leftCopy);
-    mergeSort(rightCopy);
-
-    return sortArrays(leftCopy, rightCopy);
   }
+
+  // Divide array in half
+  const mid = arr.length / 2;
+
+  let left = arr.slice(0, mid);
+  let right = arr.slice(mid);
+
+  // Recursively divide left array, and right array then merge
+  return merge(mergeSort(left), mergeSort(right));
 }
 
 console.log(mergeSort([9, 3, 7, 5, 6, 4, 8, 2]));
